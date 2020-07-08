@@ -253,36 +253,28 @@ export function isEqualsWithFlags(a: string, b: string, flags: number) {
 
 export function compareAndAutoInit(a: string, b: string): Promise<number> {
 	if (ccc == null || collationElements == null) {
-		return init().then(() => {
-			return compare(a, b);
-		});
+		return init().then(() => compare(a, b));
 	}
 	return Promise.resolve(compare(a, b));
 }
 
 export function compareWithFlagsAndAutoInit(a: string, b: string, flags: number): Promise<number> {
 	if (ccc == null || collationElements == null) {
-		return init().then(() => {
-			return compareWithFlags(a, b, flags);
-		});
+		return init().then(() => compareWithFlags(a, b, flags));
 	}
 	return Promise.resolve(compareWithFlags(a, b, flags));
 }
 
 export function isEqualsAndAutoInit(a: string, b: string): Promise<boolean> {
 	if (ccc == null || collationElements == null) {
-		return init().then(() => {
-			return isEquals(a, b);
-		});
+		return init().then(() => isEquals(a, b));
 	}
 	return Promise.resolve(isEquals(a, b));
 }
 
 export function isEqualsWithFlagsAndAutoInit(a: string, b: string, flags: number): Promise<boolean> {
 	if (ccc == null || collationElements == null) {
-		return init().then(() => {
-			return isEqualsWithFlags(a, b, flags);
-		});
+		return init().then(() => isEqualsWithFlags(a, b, flags));
 	}
 	return Promise.resolve(isEqualsWithFlags(a, b, flags));
 }
