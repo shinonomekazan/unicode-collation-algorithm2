@@ -1,6 +1,6 @@
 {
 	"name": "unicode-collation-algorithm2",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "Implement the TR #10 - Unicode Collation Algorithm",
 	"main": "build/index.js",
 	"scripts": {

@@ -7,9 +7,9 @@ describe("compare test", () => {
 		return uca.init();
 	});
 	it("大小比較", async () => {
-		// expect(uca.compare("a", "a", flag)).to.eq(0);
-		// expect(uca.compare("a", "b", flag)).to.eq(-1);
-		// expect(uca.compare("b", "a", flag)).to.eq(1);
+		expect(uca.compare("a", "a")).to.eq(0);
+		expect(uca.compare("a", "b")).to.eq(-1);
+		expect(uca.compare("b", "a")).to.eq(1);
 	});
 	it("日本語系のテスト", async () => {
 		expect(uca.compare("ギガゾンビ", "きかそんひ")).to.eq(0);

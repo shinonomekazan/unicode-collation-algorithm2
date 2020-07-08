@@ -15,6 +15,7 @@ function isCoreHan(cp: number) {
 
 let collationElements: Map<string, number[][]> | null = null;
 let ccc: any | null = null;
+let initing: Promise<[void, void]> | null = null;
 
 function initCcc(cccFilePath: string) {
 	return new Promise<void>((resolve, reject) => {
@@ -60,7 +61,9 @@ function initCollation(collationFilePath: string) {
 }
 
 function sortKeyRaw(str: string, flags: number) {
-	if (!collationElements) throw new Error("Not initialized UCA yet.");
+	if (collationElements == null || ccc == null) {
+		throw new Error("Not initialized UCA yet.");
+	}
 
 	const codes = Array.from(str);
 
@@ -194,10 +197,24 @@ export const QUATERNARY = 64;
 export const QUATERNARY_REVERSED = 128;
 
 export function init() {
-	return Promise.all([
+	if (ccc != null && collationElements != null) {
+		return Promise.resolve(true);
+	}
+	if (initing != null) {
+		return initing;
+	}
+	initing = Promise.all([
 		initCcc(path.join(__dirname, "..", "ccc.trie")),
 		initCollation(path.join(__dirname, "..", "allkeys.txt")),
 	]);
+	return new Promise((resolve, reject) => {
+		initing!.then(() => {
+			initing = null;
+			resolve(true);
+		}).catch((err) => {
+			reject(err);
+		});
+	});
 }
 
 export function sortKey(str: string, flags: number) {
@@ -227,9 +244,37 @@ export function compare(a: string, b: string) {
 }
 
 export function isEquals(a: string, b: string) {
-	return compareWithFlags(a, b, PRIMARY) === 0;
+	return compare(a, b) === 0;
 }
 
 export function isEqualsWithFlags(a: string, b: string, flags: number) {
 	return compareWithFlags(a, b, flags) === 0;
+}
+
+export function compareAndAutoInit(a: string, b: string): Promise<number> {
+	if (ccc == null || collationElements == null) {
+		return init().then(() => compare(a, b));
+	}
+	return Promise.resolve(compare(a, b));
+}
+
+export function compareWithFlagsAndAutoInit(a: string, b: string, flags: number): Promise<number> {
+	if (ccc == null || collationElements == null) {
+		return init().then(() => compareWithFlags(a, b, flags));
+	}
+	return Promise.resolve(compareWithFlags(a, b, flags));
+}
+
+export function isEqualsAndAutoInit(a: string, b: string): Promise<boolean> {
+	if (ccc == null || collationElements == null) {
+		return init().then(() => isEquals(a, b));
+	}
+	return Promise.resolve(isEquals(a, b));
+}
+
+export function isEqualsWithFlagsAndAutoInit(a: string, b: string, flags: number): Promise<boolean> {
+	if (ccc == null || collationElements == null) {
+		return init().then(() => isEqualsWithFlags(a, b, flags));
+	}
+	return Promise.resolve(isEqualsWithFlags(a, b, flags));
 }
