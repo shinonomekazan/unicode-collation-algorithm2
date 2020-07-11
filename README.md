@@ -25,7 +25,7 @@ uca.compare("y", "Y"); // 0
 uca.compare("Ý", "Y"); // 0
 ```
 
-### Using with autoinitializion as necessary
+### Using with auto initialization as necessary
 
 ```ts
 import * as uca from "unicode-collation-algorithm2";
