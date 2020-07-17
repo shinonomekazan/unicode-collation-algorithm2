@@ -8,8 +8,8 @@ describe("deep compare for japanese", () => {
 	});
 	it("同一の値", async () => {
 		const sameCharSets = [
-			["⼀", "㆒", "㊀"],
-			["⼆", "㆓", "㊁"],
+			["一", "⼀", "㆒", "㊀"],
+			["二", "⼆", "㆓", "㊁"],
 			["ぉ", "お", "ォ", "オ", "㋔", "ｫ", "ｵ"],
 			["⻱","⻲","⿔","龜","龜"],
 			["⽴","立"],
@@ -27,18 +27,6 @@ describe("deep compare for japanese", () => {
 			sameCharSet.forEach((sameChar, index) => {
 				for (let i = index + 1; i < sameCharSet.length; i++) {
 					expect(uca.compare(sameChar, sameCharSet[i])).to.eq(0);
-				}
-			});
-		});
-	});
-	it("違う値", async () => {
-		const differentCharSets = [
-			["⼀", "一"],
-		];
-		differentCharSets.forEach((differentCharSet) => {
-			differentCharSet.forEach((differentChar, index) => {
-				for (let i = index + 1; i < differentCharSet.length; i++) {
-					expect(uca.compare(differentChar, differentCharSet[i])).to.not.eq(0);
 				}
 			});
 		});
